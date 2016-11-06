@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>-1</persistent>
+  <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,14 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Initialize Global Variables
-grav_val = 1;           // px/step^2
-jump_speed = -15;       // px/step
-base_width = 30;        // ~half of the with of the player's base
-x_target_speed = 10;    // px/step
-x_acceleration = 0.25;  // px/step^2
-end_x = 0;              // final wall
-debugging = true;
+            <string>follow_player = true;
 </string>
           </argument>
         </arguments>
@@ -55,37 +48,14 @@ debugging = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Update position
-x = view_xview;
-y = view_yview;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="4">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>var end_wall = instance_exists(o_end_wall);
-if (end_wall != noone) {
-    end_x = end_wall.x
-} else {
-    end_x = room_width;
+            <string>
+if (follow_player &amp;&amp; instance_exists(o_pc)) {
+    x += (o_pc.x - x) / 25; // arbitrary
+    y += (o_pc.y - y) / 25;
 }
+
+view_xview = x - (view_wview / 2);
+view_yview = y - (view_hview / 2);
 </string>
           </argument>
         </arguments>

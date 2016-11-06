@@ -6,10 +6,14 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\s_pc</sprite>
-    <sprite>sprites\s_ground</sprite>
     <sprite>sprites\s_alien_run_small</sprite>
     <sprite>sprites\s_alien_run</sprite>
+    <sprites name="Utility">
+      <sprite>sprites\s_wall</sprite>
+      <sprite>sprites\s_ground</sprite>
+      <sprite>sprites\s_pc</sprite>
+      <sprite>sprites\s_end_wall</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -22,6 +26,9 @@
     <object>objects\o_debug_helper</object>
     <object>objects\o_ground</object>
     <object>objects\o_g</object>
+    <object>objects\o_wall</object>
+    <object>objects\o_end_wall</object>
+    <object>objects\o_cam</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\r_initialize</room>

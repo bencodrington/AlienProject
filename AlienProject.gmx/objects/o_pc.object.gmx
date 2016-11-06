@@ -39,15 +39,18 @@ jumping = false;
 on_ground = false;
 
 // Motion Variables
-XX = 0; // how much to move horizontally per step
-YY = 0; // how much to move vertically per step
+XX = 0;             // how much to move horizontally per step
+YY = 0;             // how much to move vertically per step
 y_speed = 0;
 x_speed = 0;
+dir_right = true;   // false when going left
 
 // Other Variables
 image_index = 0;
 image_speed = 0.5;
 ground_below = noone; // used for checking collisions with the ground
+obstacle = noone;     // used for checking collisions in front
+obstacle_below = noone;
 </string>
           </argument>
         </arguments>
@@ -105,9 +108,9 @@ if (keyboard_check(ord("W"))) {
           <argument>
             <kind>1</kind>
             <string>/// Calculate YY
-y_speed += o_g.vars[? "gravity"];
+y_speed += o_g.grav_val;
 YY = y_speed;
-if (scr_below_check(o_ground)) {
+if (scr_below_check(o_ground) || scr_below_check(o_wall)) {
     on_ground = true;
     y_speed = 0;
     YY = 0;
@@ -117,13 +120,46 @@ if (scr_below_check(o_ground)) {
 }
 
 if (on_ground &amp;&amp; can_jump &amp;&amp; key_up_pressed) {
-    y_speed = -10;
+    y_speed = o_g.jump_speed;
     YY = y_speed
 }
 
-ground_below = instance_position(x, y + YY, o_ground);
-if (ground_below != noone) { // TODO: change to check lower corners
+ground_below = instance_position(x + XX, y + YY, o_ground);  // TODO: change to check lower corners
+obstacle_below = instance_position(x + XX, y + YY, o_wall);
+if (obstacle_below != noone) {
+    YY = obstacle_below.y - y;
+} else if (ground_below != noone) {
     YY = ground_below.y - y;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Calculate XX
+if (x_speed &lt; o_g.x_target_speed)
+    {x_speed = min(o_g.x_target_speed, x_speed + o_g.x_acceleration);}
+
+XX = x_speed;
+
+obstacle = instance_position(x + o_g.base_width + XX, y - 1, o_wall);
+if (obstacle != noone) { // TODO: change to check front corners
+    XX = obstacle.x - (x + o_g.base_width);
 }
 </string>
           </argument>
@@ -147,8 +183,31 @@ if (ground_below != noone) { // TODO: change to check lower corners
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>x += XX;
+            <string>/// Move
+x += XX;
 y += YY;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Sprite Modification
+image_speed = 0.05 * XX;
 </string>
           </argument>
         </arguments>
@@ -171,10 +230,8 @@ y += YY;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_self();
-
-draw_text(0,0,"on_ground: " + string(on_ground));
-draw_text(0,10,"key_up_pressed: " + string(key_up_pressed));
+            <string>/// Draw Self
+draw_self();
 </string>
           </argument>
         </arguments>
