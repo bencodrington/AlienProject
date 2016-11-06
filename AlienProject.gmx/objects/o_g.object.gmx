@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>vars = ds_map_create();
 vars[? "gravity"] = 1;      // px/step^2
-vars[? "base_width"] = 15;  // half of the with of the player's base
+vars[? "base_width"] = 32;  // half of the with of the player's base
 </string>
           </argument>
         </arguments>

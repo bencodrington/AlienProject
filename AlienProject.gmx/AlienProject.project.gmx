@@ -8,6 +8,8 @@
   <sprites name="sprites">
     <sprite>sprites\s_pc</sprite>
     <sprite>sprites\s_ground</sprite>
+    <sprite>sprites\s_alien_run_small</sprite>
+    <sprite>sprites\s_alien_run</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
